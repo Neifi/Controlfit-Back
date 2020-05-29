@@ -62,6 +62,7 @@
             </p>
           </div>
           <div class="card-body">
+<<<<<<< HEAD
             <form [formGroup]="form" (ngSubmit)="updateCliente(i)">
               <div class="row">
                 <div class="col-md-4">
@@ -70,6 +71,16 @@
                       matInput
                       placeholder="Nombre de usuario"
                       [value]="cliente.nombre"
+=======
+            <form [formGroup]="form" (ngSubmit)="updateCliente()">
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input
+                      matInput
+                      placeholder="Nombre de usuario"
+                     
+>>>>>>> branch 'master' of https://github.com/Neifi/GestionGymAPI
                       formControlName="nombre"
 
                     />

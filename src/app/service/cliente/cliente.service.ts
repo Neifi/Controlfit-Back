@@ -32,4 +32,11 @@ export class ClienteService {
     
   }
 
+<<<<<<< HEAD
+=======
+  public postCliente(cliente:Cliente){
+    return this.httpClient.post(this.URL,cliente);
+  }
+
+>>>>>>> branch 'master' of https://github.com/Neifi/GestionGymAPI
 }

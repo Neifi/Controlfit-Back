@@ -112,6 +112,13 @@
             ],
             "exclude": []
           }
+<<<<<<< HEAD
+=======
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
+>>>>>>> branch 'master' of https://github.com/Neifi/GestionGymAPI
         }
       }
     },

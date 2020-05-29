@@ -9,6 +9,7 @@ import { decode } from "jwt-decode";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
   providers: [LoginServiceService],
+<<<<<<< HEAD
 })
 export class LoginComponent implements OnInit {
   isUsed: boolean;
@@ -33,6 +34,31 @@ export class LoginComponent implements OnInit {
     // const token = sessionStorage.getItem("token");
     // this.role = decode(token).role;
 
+=======
+  
+})
+export class LoginComponent implements OnInit {
+  isUsed: boolean;
+  inputPassword = new FormControl("inputUsername");
+  inputUsername = new FormControl("inputUsername");
+  constructor(
+    private loginService: LoginServiceService,
+    private router: Router
+  ) {}
+
+  username = "";
+  password = "";
+  role: any;
+  invalidLogin = false;
+
+  onTextChange() {
+    this.isUsed = true;
+    console.log(this.isUsed);
+  }
+
+  login() {
+    
+>>>>>>> branch 'master' of https://github.com/Neifi/GestionGymAPI
     this.loginService.authenticate(this.username, this.password).subscribe(
       (data) => {
         this.invalidLogin = false;
