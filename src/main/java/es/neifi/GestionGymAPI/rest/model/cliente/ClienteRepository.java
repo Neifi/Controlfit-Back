@@ -3,6 +3,8 @@ package es.neifi.GestionGymAPI.rest.model.cliente;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.persistence.NamedQuery;
+
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,8 +26,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	List<Cliente> findAllByOrderByIdAsc();
 
 	
-	@Query(value = "SELECT id_gimnasio FROM cliente INNER JOIN usuario ON cliente.id = usuario.id_usuario WHERE id_usuario = :id_usuario")
-	Cliente findIdGimnasioByIdUsuario(@Param(value = "id_usuario") int id_usuario);
+	@Query(value = "SELECT id_gimnasio FROM Cliente INNER JOIN usuario ON cliente.id = usuario.id_usuario WHERE id_usuario = ?",nativeQuery = true)
+	Cliente findIdGimnasioByIdUsuario(int id_usuario);
 	
 	
 	
