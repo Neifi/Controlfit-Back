@@ -26,7 +26,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	List<Cliente> findAllByOrderByIdAsc();
 
 	
-	@Query(value = "SELECT id_gimnasio FROM Cliente INNER JOIN usuario ON cliente.id = usuario.id_usuario WHERE id_usuario =: id_usuario",nativeQuery = true)
+	@Query(value = "SELECT id_gimnasio FROM Cliente INNER JOIN usuario ON cliente.id = usuario.id_usuario WHERE id_usuario =:id_usuario",nativeQuery = true)
 	Cliente findIdGimnasioByIdUsuario(@Param("id_cliente")int id_usuario);
 	
 	
