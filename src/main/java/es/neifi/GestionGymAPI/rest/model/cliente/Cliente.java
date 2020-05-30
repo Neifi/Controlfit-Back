@@ -39,8 +39,9 @@ public class Cliente {
 	@Id
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
+	
 	private int id;
+	private int id_gimnasio;
 	private String dni;
 	private String nombre;
 	private String apellidos;

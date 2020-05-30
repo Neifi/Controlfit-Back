@@ -80,14 +80,11 @@ public class UsuarioController {
 		
 	}
 
-	@PostMapping("/registro")
+	@PostMapping("usuario")
 	public ResponseEntity<GetUserDTO> nuevoUsuario(@RequestBody CrearUsuarioDTO nuevoUsuario) {
 		ResponseEntity<GetUserDTO> toReturn = ResponseEntity.status(HttpStatus.CREATED)
 				.body(usuarioDTOConverter.convertUserToGetUserDTO(usuarioService.nuevoUsuario(nuevoUsuario)));
-
-		// Token y mail
-		// String appUrl = servletContext.getContextPath();
-
+		
 		return toReturn;
 	}
 
@@ -95,6 +92,8 @@ public class UsuarioController {
 	public ResponseEntity<?> updatePerfil(@RequestBody PutUsuarioDTO data, @RequestParam int id) {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.putUsuario(data, id));
 	}
+	
+
 
 }
 

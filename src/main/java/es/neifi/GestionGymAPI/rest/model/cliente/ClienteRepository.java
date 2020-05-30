@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import es.neifi.GestionGymAPI.rest.model.usuario.Usuario;
+
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 
 	@Modifying
@@ -22,6 +24,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	List<Cliente> findAllByOrderByIdAsc();
 
 	
+	@Query(value = "SELECT id_gimnasio FROM cliente INNER JOIN usuario ON cliente.id = usuario.id_usuario WHERE id_usuario = ?", nativeQuery = true)
+	Cliente findIdGimnasioByIdUsuario(int id_usuario);
 	
 	
 	

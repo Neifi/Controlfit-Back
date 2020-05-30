@@ -3,6 +3,7 @@ package es.neifi.GestionGymAPI.rest.security.jwt.model;
 import java.util.Set;
 
 import es.neifi.GestionGymAPI.rest.model.DTO.usuario.GetUserDTO;
+import es.neifi.GestionGymAPI.rest.model.rol.Rol;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

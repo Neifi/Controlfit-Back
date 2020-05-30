@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class CrearClienteDTO {
-	private int id;
 	private int id_gimnasio;
 	private String dni;
 	private String password;

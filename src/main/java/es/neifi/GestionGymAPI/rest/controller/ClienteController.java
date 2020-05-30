@@ -41,8 +41,10 @@ import es.neifi.GestionGymAPI.rest.model.DTO.converter.EditarClienteDTOConverter
 import es.neifi.GestionGymAPI.rest.model.DTO.usuario.DatosPersonalesDTO;
 import es.neifi.GestionGymAPI.rest.exceptions.ApiError;
 import es.neifi.GestionGymAPI.rest.exceptions.ClienteNotFoundException;
+import es.neifi.GestionGymAPI.rest.exceptions.FalloEnAltaClienteException;
 import es.neifi.GestionGymAPI.rest.model.cliente.Cliente;
 import es.neifi.GestionGymAPI.rest.model.cliente.ClienteRepository;
+import es.neifi.GestionGymAPI.rest.model.gimnasio.GimnasioRepository;
 import es.neifi.GestionGymAPI.rest.model.rol.Rol;
 import es.neifi.GestionGymAPI.rest.model.usuario.Usuario;
 import es.neifi.GestionGymAPI.rest.services.UsuarioService;
@@ -62,6 +64,8 @@ public class ClienteController {
 	private final ClientDetailsDTOConverter clienteDetailsDTOConverter;
 	private final CreateClienteDTOConverter createClienteDTOConverter;
 	private final EditarClienteDTOConverter editarClienteDTOConverter;
+	private final UsuarioController usuarioController;
+	private final GimnasioRepository gimnasioRepository;
 
 	/**
 	 * Obtener todos los clientes
@@ -118,29 +122,52 @@ public class ClienteController {
 		}
 	}
 
-	@ApiOperation(value = "Añadir cliente", notes = "Permite añadir un cliente")
+	@ApiOperation(value = "Añadir cliente", notes = "Permite añadir un cliente, al ser añadido"
+			+ " se crea automaticamente un usuario con el nombre del cliente como credencias, tanto de usuario como"
+			+ " de contraseña, la id del gimnasio se obtiene a partir del usuario que le dio de alta que solo podrá "
+			+ " ser un admin")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Cliente.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PostMapping("/cliente")
 	public ResponseEntity<CrearClienteDTO> crearCliente(
-			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody CrearClienteDTO nuevo) {
+			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody CrearClienteDTO nuevo,
+			@AuthenticationPrincipal Usuario admin) {
+		
+		//Busca id del gimnasio a partir del usuario que da el alta
+		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario()).getId_gimnasio();
+		nuevo.setId_gimnasio(id_gimnasio);
 		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
 		clienteRepository.save(saved);
-		return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
-	}
 
+		// Alta usuario automatica
+		if (clienteRepository.findById(saved.getId()).isPresent()) {
+			usuarioController.nuevoUsuario(CrearUsuarioDTO.builder().username(saved.getNombre()).password(saved.getNombre())
+					.id(saved.getId()).build());
+			return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+		}else {
+			throw new FalloEnAltaClienteException(new ClienteNotFoundException());
+			
+		}
+		
+	}
+	
+	
+	@ApiOperation(value = "Edita un cliente", notes = "Permite editar un cliente por la autenticacion")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Cliente.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PutMapping("/cliente")
 	public Cliente modificarCliente(
 			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody Cliente cliente,
 			@AuthenticationPrincipal Usuario usuario) {
-			
+
 		cliente.setId(usuario.getId_usuario());
 		System.out.println(cliente.getCalle());
 		return clienteRepository.save(cliente);
-		
+
 	}
-	
+
 	@ApiOperation(value = "Edita un cliente", notes = "Permite editar un cliente por la id")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Cliente.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
@@ -150,10 +177,10 @@ public class ClienteController {
 	public Cliente modificarClienteporId(
 			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody Cliente cliente,
 			@PathVariable int id) {
-		
+
 		cliente.setId(id);
 		return clienteRepository.save(cliente);
-		
+
 	}
 
 	@ApiOperation(value = "Borrar cliente", notes = "Permite borrar un cliente por la id")
@@ -169,32 +196,5 @@ public class ClienteController {
 	}
 
 
-
-
-
-
-	private String generarPassword(Cliente c) {
-		String apellido = c.getApellidos();
-		String nombre = c.getNombre();
-		String password = nombre.substring(0).toUpperCase().concat(apellido.toLowerCase()).concat(".123");
-		return password;
-
-	};
-
-	private String generarUsername(Cliente c) {
-		String username = c.getDni().substring(6, 9).toLowerCase();
-
-		return username;
-	}
-
-	private Usuario buildUsuario(Cliente c) {
-
-		return Usuario.builder().verificado(false).cliente(c).avatar(null).username(generarUsername(c))
-				.password(generarPassword(c)).build();
-	}
-
-	public void altaUsuario() {
-
-	}
 
 }

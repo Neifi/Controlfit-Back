@@ -2,7 +2,6 @@
 CREATE DATABASE gestiongym;
 \c gestiongym;
 
-/*TABLA GYMS*/
 CREATE TABLE gimnasio (
 	id_gimnasio INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	nombre varchar(50),
@@ -15,7 +14,7 @@ CREATE TABLE gimnasio (
 
 /*TABLA CLIENTES*/
 CREATE TABLE cliente (
-	id_cliente INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	id_gimnasio INT REFERENCES gimnasio(id_gimnasio),
 	dni VARCHAR(9) UNIQUE,
 	nombre VARCHAR(50) NOT NULL,
@@ -24,7 +23,7 @@ CREATE TABLE cliente (
 	fecha_inscripcion VARCHAR(10) NOT NULL,
 	email VARCHAR UNIQUE,
 	calle VARCHAR,
-	codigo_postal INT,
+	codigo_postal VARCHAR,
 	ciudad VARCHAR,
 	provincia VARCHAR
 );
@@ -125,29 +124,3 @@ insert into public.usuario_rol(usuario_id_usuario,rol) values (1,'ADMIN');
 insert into public.usuario_rol(usuario_id_usuario,rol) values (2,'USER');
 insert into public.usuario_rol(usuario_id_usuario,rol) values (2,'UNVERIFIED');
 
-
-
-
-ALTER TABLE usuario
-        ADD FOREIGN KEY (id_usuario) REFERENCES cliente (id_cliente)
-                DEFERRABLE INITIALLY DEFERRED;
- 
-ALTER TABLE cliente
-        ADD FOREIGN KEY (id_cliente) REFERENCES usuario (id_usuario)
-                DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE usuario
-        ADD FOREIGN KEY (id_usuario) REFERENCES verification_token (id_token)
-                DEFERRABLE INITIALLY DEFERRED;
-
-                
-                
-ALTER TABLE verification_token
-        ADD FOREIGN KEY (id_token) REFERENCES usuario (id_suario)
-                DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE verification_token
-        ADD FOREIGN KEY (id_token) REFERENCES usuario (id_suario)
-                DEFERRABLE INITIALLY DEFERRED;
-
-                

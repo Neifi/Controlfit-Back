@@ -8,10 +8,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.neifi.GestionGymAPI.rest.exceptions.UsuarioNotFoundException;
+import es.neifi.GestionGymAPI.rest.model.DTO.CrearClienteDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.CrearUsuarioDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.PutClienteDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.converter.UsuarioDTOConverter;
@@ -61,4 +63,10 @@ public class UsuarioService extends BaseService<Usuario, Integer,UsuarioReposito
 		}).orElseThrow(() -> new UsuarioNotFoundException(id));
 		
 	}
+	
+	public Usuario putRol(@RequestParam String rol, @PathVariable int id) {
+		return null;
+	}
+
+
 }

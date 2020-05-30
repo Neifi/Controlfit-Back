@@ -1,9 +1,11 @@
 package es.neifi.GestionGymAPI.rest.model.DTO.converter;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import es.neifi.GestionGymAPI.rest.model.DTO.usuario.GetUserDTO;
@@ -19,12 +21,14 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioDTOConverter {
 
 	private final ModelMapper modelMapper;
-
+	private final PasswordEncoder encoder;
 
 	public GetUserDTO convertUserToGetUserDTO(Usuario usuario) {
 		return GetUserDTO.builder()
 				.username(usuario.getUsername())
 				.avatar(usuario.getAvatar())
+				.password(encoder.encode(usuario.getPassword()))
+				.roles(usuario.getRol().stream().map(Rol::name).collect(Collectors.toSet()))
 				.build();
 			
 				

@@ -19,9 +19,6 @@ import lombok.Setter;
 @NoArgsConstructor
 
 
-
-
-
 public class ApiError {
 	
 	@NonNull
