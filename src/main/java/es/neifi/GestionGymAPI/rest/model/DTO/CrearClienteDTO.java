@@ -19,4 +19,5 @@ public class CrearClienteDTO {
 	private String provincia;
 	private String codigo_postal;
 	private String fecha_nacimiento;
+	private String fecha_inscripcion;
 }

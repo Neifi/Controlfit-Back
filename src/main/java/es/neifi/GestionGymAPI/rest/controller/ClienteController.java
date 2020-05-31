@@ -1,6 +1,7 @@
 package es.neifi.GestionGymAPI.rest.controller;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -137,9 +139,14 @@ public class ClienteController {
 		//Busca id del gimnasio a partir del usuario que da el alta
 		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario());
 		nuevo.setId_gimnasio(id_gimnasio);
+		nuevo.setFecha_inscripcion(
+				DateTime.now()
+					.parse("dd-MM-yyyy")
+					.toString());
+		
 		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
 		clienteRepository.save(saved);
-
+		
 		// Alta usuario automatica
 		if (clienteRepository.findById(saved.getId()).isPresent()) {
 			usuarioController.nuevoUsuario(CrearUsuarioDTO.builder().username(saved.getNombre()).password(saved.getNombre())
