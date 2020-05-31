@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -140,7 +142,7 @@ public class ClienteController {
 		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario());
 		nuevo.setId_gimnasio(id_gimnasio);
 		nuevo.setFecha_inscripcion(
-				DateTime.now()
+				 DateTime.parse(DateTime.now().toString(),DateTimeFormat.forPattern("dd-MM-yyyy"))
 					.toString());
 		
 		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
