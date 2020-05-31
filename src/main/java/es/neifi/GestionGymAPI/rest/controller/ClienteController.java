@@ -141,7 +141,6 @@ public class ClienteController {
 		nuevo.setId_gimnasio(id_gimnasio);
 		nuevo.setFecha_inscripcion(
 				DateTime.now()
-					.parse("dd-MM-yyyy")
 					.toString());
 		
 		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
