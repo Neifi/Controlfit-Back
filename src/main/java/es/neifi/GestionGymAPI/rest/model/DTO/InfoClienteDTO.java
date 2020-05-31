@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class InfoClienteDTO {
-	
+	private int id;
 	private String dni;
 	private String nombre;
 	private String apellidos;

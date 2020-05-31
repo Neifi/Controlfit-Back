@@ -55,6 +55,8 @@ public class UsuarioController {
 		// return usuarioDTOConverter.convertUserToGetUserDTO(usuarioActual);
 		return usuarioService.findById(usuarioActual.getId_usuario());
 	}
+	
+	
 
 	@GetMapping("/usuario")
 	public List getAllUsers() {
