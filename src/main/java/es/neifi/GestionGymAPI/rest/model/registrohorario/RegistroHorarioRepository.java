@@ -30,5 +30,9 @@ public interface RegistroHorarioRepository extends JpaRepository<RegistroHorario
 	@Query(value = "SELECT * FROM registroHorario WHERE id_usuario = ?", nativeQuery = true)
 	public  Optional<List<RegistroHorario>> selectByUserId(int id);
 	
+	@Transactional
+	@Modifying
+	@Query(value="DELETE FROM registrohorario WHERE id_usuario = ?", nativeQuery = true)
+	public int deleteByIdUsuario(int id_usuario);
 	
 }

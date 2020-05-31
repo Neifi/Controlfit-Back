@@ -50,6 +50,7 @@ import es.neifi.GestionGymAPI.rest.exceptions.FalloEnAltaClienteException;
 import es.neifi.GestionGymAPI.rest.model.cliente.Cliente;
 import es.neifi.GestionGymAPI.rest.model.cliente.ClienteRepository;
 import es.neifi.GestionGymAPI.rest.model.gimnasio.GimnasioRepository;
+import es.neifi.GestionGymAPI.rest.model.registrohorario.RegistroHorarioRepository;
 import es.neifi.GestionGymAPI.rest.model.rol.Rol;
 import es.neifi.GestionGymAPI.rest.model.usuario.Usuario;
 import es.neifi.GestionGymAPI.rest.services.UsuarioService;
@@ -71,6 +72,8 @@ public class ClienteController {
 	private final EditarClienteDTOConverter editarClienteDTOConverter;
 	private final UsuarioController usuarioController;
 	private final GimnasioRepository gimnasioRepository;
+	private final RegistroHorarioRepository registroHorarioRepository;
+	private final UsuarioService usuarioService;
 
 	/**
 	 * Obtener todos los clientes
@@ -201,7 +204,9 @@ public class ClienteController {
 	public ResponseEntity<?> borrarProducto(
 			@ApiParam(value = "ID del cliente", required = true, type = "Integer") @PathVariable int id) {
 		Cliente borrar = clienteRepository.findById(id).orElseThrow(() -> new ClienteNotFoundException(id));
+		registroHorarioRepository.deleteByIdUsuario(id);
 		clienteRepository.delete(borrar);
+		usuarioService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
