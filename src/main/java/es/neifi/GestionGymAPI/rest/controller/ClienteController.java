@@ -135,7 +135,7 @@ public class ClienteController {
 			@AuthenticationPrincipal Usuario admin) {
 		
 		//Busca id del gimnasio a partir del usuario que da el alta
-		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario()).getId_gimnasio();
+		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario());
 		nuevo.setId_gimnasio(id_gimnasio);
 		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
 		clienteRepository.save(saved);
