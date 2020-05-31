@@ -13,7 +13,10 @@ public class CrearClienteDTO {
 	private String password;
 	private String nombre;
 	private String apellidos;
+	private String email;
+	private String calle;
+	private String ciudad;
+	private String provincia;
+	private String codigo_postal;
 	private String fecha_nacimiento;
-	private String fecha_inscripcion;
-
 }

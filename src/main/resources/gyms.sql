@@ -119,7 +119,6 @@ insert into public.registrohorario(id_usuario,horaentrada,horasalida,fecha) valu
 insert into public.registrohorario(id_usuario,horaentrada,horasalida,fecha) values (2,'11:00:00','14:00:00','08-05-2020');
 insert into public.registrohorario(id_usuario,horaentrada,horasalida,fecha) values (3,'8:00:00','14:00:00','08-05-2020');
 
-
 insert into public.usuario_rol(usuario_id_usuario,rol) values (1,'ADMIN');
 insert into public.usuario_rol(usuario_id_usuario,rol) values (2,'USER');
 insert into public.usuario_rol(usuario_id_usuario,rol) values (2,'UNVERIFIED');
