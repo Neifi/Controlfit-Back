@@ -1,6 +1,8 @@
 package es.neifi.GestionGymAPI.rest.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletContext;
@@ -52,6 +54,13 @@ public class UsuarioController {
 
 		// return usuarioDTOConverter.convertUserToGetUserDTO(usuarioActual);
 		return usuarioService.findById(usuarioActual.getId_usuario());
+	}
+	
+	@GetMapping("/usuario")
+	public List getAllUsers() {
+
+		// return usuarioDTOConverter.convertUserToGetUserDTO(usuarioActual);
+		return (List) usuarioService.findAll().stream().collect(Collectors.toList());
 	}
 
 	@PutMapping(value = "user/upload", consumes = MediaType.ALL_VALUE)

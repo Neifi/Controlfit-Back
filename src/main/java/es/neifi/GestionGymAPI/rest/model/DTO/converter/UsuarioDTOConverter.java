@@ -24,10 +24,12 @@ public class UsuarioDTOConverter {
 	private final PasswordEncoder encoder;
 
 	public GetUserDTO convertUserToGetUserDTO(Usuario usuario) {
+		System.out.println(usuario.getPassword());
 		return GetUserDTO.builder()
 				.username(usuario.getUsername())
 				.avatar(usuario.getAvatar())
-				.password(encoder.encode(usuario.getPassword()))
+				
+				.password(usuario.getPassword())
 				.roles(usuario.getRol().stream().map(Rol::name).collect(Collectors.toSet()))
 				.build();
 			

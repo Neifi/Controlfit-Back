@@ -37,14 +37,19 @@ public class UsuarioService extends BaseService<Usuario, Integer,UsuarioReposito
 		return this.repositorio.findByUsername(username);
 	}
 	
+	/**
+	 * Crea un usuario encriptando el password y asignandole un rol por defecto
+	 * @param usuario
+	 * @return
+	 */
 	public Usuario nuevoUsuario (CrearUsuarioDTO usuario) {
 		
-		
+			System.out.println(usuario.getPassword());
 			Usuario newUsuario = Usuario.builder()
 					.username(usuario.getUsername())
 					.password(passwordEncoder.encode(usuario.getPassword()))
 					.avatar(null)
-					.rol(Stream.of(Rol.UNVERIFIED).collect(Collectors.toSet()))
+					.rol(Stream.of(Rol.USER).collect(Collectors.toSet()))
 					.build();
 			try {
 				Usuario toReturn = save(newUsuario);
@@ -55,7 +60,12 @@ public class UsuarioService extends BaseService<Usuario, Integer,UsuarioReposito
 		
 	}
 	
-	
+	/**
+	 * Actualiza los datos de un usuario
+	 * @param usuarioDTO
+	 * @param id
+	 * @return
+	 */
 	public Usuario putUsuario(@RequestParam PutUsuarioDTO usuarioDTO, @RequestParam int id) {
 		return findById(id).map(u ->{
 			u = usuarioDTOConverter.convertToUsuario(usuarioDTO);

@@ -1,6 +1,6 @@
 package es.neifi.GestionGymAPI.rest.controller;
 
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.data.domain.Sort;
@@ -141,9 +142,10 @@ public class ClienteController {
 		//Busca id del gimnasio a partir del usuario que da el alta
 		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario());
 		nuevo.setId_gimnasio(id_gimnasio);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		nuevo.setFecha_inscripcion(
-				 DateTime.parse(DateTime.now().toString(),DateTimeFormat.forPattern("dd-MM-yyyy"))
-					.toString());
+				simpleDateFormat.format(new Date()));
 		
 		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
 		clienteRepository.save(saved);
