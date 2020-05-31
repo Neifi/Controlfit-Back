@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CrearUsuarioDTO {
-	private int id;
 	private String username;
 	private String avatar;
 	private String password;

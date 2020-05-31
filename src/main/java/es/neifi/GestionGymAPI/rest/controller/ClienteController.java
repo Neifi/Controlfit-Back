@@ -135,8 +135,8 @@ public class ClienteController {
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PostMapping("/cliente")
-	public ResponseEntity<CrearClienteDTO> crearCliente(
-			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody CrearClienteDTO nuevo,
+	public ResponseEntity<Cliente> crearCliente(
+			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody Cliente nuevo,
 			@AuthenticationPrincipal Usuario admin) {
 		
 		//Busca id del gimnasio a partir del usuario que da el alta
@@ -147,13 +147,13 @@ public class ClienteController {
 		nuevo.setFecha_inscripcion(
 				simpleDateFormat.format(new Date()));
 		
-		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
-		clienteRepository.save(saved);
+//		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
+		clienteRepository.save(nuevo);
 		
 		// Alta usuario automatica
-		if (clienteRepository.findById(saved.getId()).isPresent()) {
-			usuarioController.nuevoUsuario(CrearUsuarioDTO.builder().username(saved.getNombre()).password(saved.getNombre())
-					.id(saved.getId()).build());
+		if (clienteRepository.findById(nuevo.getId()).isPresent()) {
+			usuarioController.nuevoUsuario(CrearUsuarioDTO.builder().username(nuevo.getNombre()).password(nuevo.getNombre())
+					.build());
 			return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
 		}else {
 			throw new FalloEnAltaClienteException(new ClienteNotFoundException());

@@ -1,7 +1,3 @@
-/*CREACION Y CONEXIÓN DE LA BD*/
-CREATE DATABASE gestiongym;
-\c gestiongym;
-
 CREATE TABLE gimnasio (
 	id_gimnasio INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	nombre varchar(50),
@@ -30,7 +26,7 @@ CREATE TABLE cliente (
 
 CREATE TABLE usuario (
 	id_usuario INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	username VARCHAR NOT NULL,
+	username VARCHAR NOT NULL UNIQUE,
 	password VARCHAR NOT NULL,
 	avatar varchar,
 	fecha_creacion VARCHAR,
@@ -57,7 +53,7 @@ CREATE TABLE factura(
 );
 CREATE TABLE telefono(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    id_cliente INT REFERENCES cliente(id_cliente),
+    id_cliente INT REFERENCES cliente(id),
     numero varchar NOT NULL
 );
 CREATE TABLE  rutinaActiva(
@@ -122,4 +118,7 @@ insert into public.registrohorario(id_usuario,horaentrada,horasalida,fecha) valu
 insert into public.usuario_rol(usuario_id_usuario,rol) values (1,'ADMIN');
 insert into public.usuario_rol(usuario_id_usuario,rol) values (2,'USER');
 insert into public.usuario_rol(usuario_id_usuario,rol) values (2,'UNVERIFIED');
+
+ALTER TABLE cliente
+        ADD FOREIGN KEY (id) REFERENCES usuario (id_usuario);
 
