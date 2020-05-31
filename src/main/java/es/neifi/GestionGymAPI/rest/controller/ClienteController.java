@@ -197,7 +197,7 @@ public class ClienteController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Cliente.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@DeleteMapping("/clientes/{id}")
+	@DeleteMapping("/cliente/{id}")
 	public ResponseEntity<?> borrarProducto(
 			@ApiParam(value = "ID del cliente", required = true, type = "Integer") @PathVariable int id) {
 		Cliente borrar = clienteRepository.findById(id).orElseThrow(() -> new ClienteNotFoundException(id));

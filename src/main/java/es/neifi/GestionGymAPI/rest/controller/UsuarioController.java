@@ -55,7 +55,7 @@ public class UsuarioController {
 		// return usuarioDTOConverter.convertUserToGetUserDTO(usuarioActual);
 		return usuarioService.findById(usuarioActual.getId_usuario());
 	}
-	
+
 	@GetMapping("/usuario")
 	public List getAllUsers() {
 
@@ -63,7 +63,7 @@ public class UsuarioController {
 		return (List) usuarioService.findAll().stream().collect(Collectors.toList());
 	}
 
-	@PutMapping(value = "user/upload", consumes = MediaType.ALL_VALUE)
+	@PutMapping(value = "usuario/avatar", consumes = MediaType.ALL_VALUE)
 	public ResponseEntity<?> nuevoAvatar(@AuthenticationPrincipal Usuario usuarioActual,
 			@RequestPart("file") MultipartFile file) {
 
@@ -73,11 +73,8 @@ public class UsuarioController {
 			String imagen = storageService.store(file);
 			url = MvcUriComponentsBuilder.fromMethodName(FicherosController.class, "serveFile", imagen, null).build()
 					.toUriString();
-			;
-			// setAvatarUsuarioDTO.setUrl(url);
 			usuarioActual.setAvatar(url);
 			try {
-
 				return ResponseEntity.ok(usuarioService.edit(usuarioActual));
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ha sido posible cargar la imagen");
@@ -86,14 +83,13 @@ public class UsuarioController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ha sido posible subir la imagen");
 		}
 
-		
 	}
 
 	@PostMapping("usuario")
 	public ResponseEntity<GetUserDTO> nuevoUsuario(@RequestBody CrearUsuarioDTO nuevoUsuario) {
 		ResponseEntity<GetUserDTO> toReturn = ResponseEntity.status(HttpStatus.CREATED)
 				.body(usuarioDTOConverter.convertUserToGetUserDTO(usuarioService.nuevoUsuario(nuevoUsuario)));
-		
+
 		return toReturn;
 	}
 
@@ -101,8 +97,5 @@ public class UsuarioController {
 	public ResponseEntity<?> updatePerfil(@RequestBody PutUsuarioDTO data, @RequestParam int id) {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.putUsuario(data, id));
 	}
-	
-
 
 }
-
