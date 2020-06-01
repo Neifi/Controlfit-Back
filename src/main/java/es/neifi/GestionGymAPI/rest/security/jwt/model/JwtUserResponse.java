@@ -12,6 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+/**
+ * Al generarse el token envia los datos del usuario logeado y el token
+ * @author neifi
+ *
+ */
 public class JwtUserResponse extends GetUserDTO{
 	private String token;
 	
@@ -21,3 +26,5 @@ public class JwtUserResponse extends GetUserDTO{
 		this.token = token;
 	}
 }
+
+

@@ -20,10 +20,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import es.neifi.GestionGymAPI.rest.security.jwt.JwtAuthorizationFilter;
 import es.neifi.GestionGymAPI.rest.services.CustomUserDetailsService;
-
+import io.jsonwebtoken.lang.Arrays;
 import es.neifi.GestionGymAPI.rest.services.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 
 @Configuration
@@ -38,7 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final CustomUserDetailsService userDetailsService;
 	private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 	private final JwtAuthorizationFilter filter;
-
+	private static final String[] AUTH_WHITELIST = {
+	        "/swagger-resources/**",
+	        "/swagger-ui.html",
+	        "/v2/api-docs",
+	        "/webjars/**"
+	};
 	@Override
 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -60,6 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+					.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
+					.antMatchers(HttpMethod.GET, "/webjars/**").permitAll()
 					.antMatchers(HttpMethod.GET, "/cliente/**", "/registro/**", "/horario/**").hasRole("ADMIN")
 					.antMatchers(HttpMethod.POST, "/cliente/**", "/registro/**", "/horario/**").hasRole("ADMIN")
 					.antMatchers(HttpMethod.PUT, "/cliente/**", "/registro/**", "/horario/**").hasRole("ADMIN")
@@ -70,6 +81,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// filtro
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		
+	;
+		
 	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		
+		web.ignoring().antMatchers(AUTH_WHITELIST);
+	}
+	
+	
 
 }

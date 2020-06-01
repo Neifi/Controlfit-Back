@@ -26,6 +26,13 @@ import lombok.extern.java.Log;
 
 @Log
 @Component
+
+/**
+ * Genera un Json Web Token a partir de un intento de autenticación correcto y 
+ * valida el token, lanzando una excepción en función del error
+ * @author neifi
+ *
+ */
 public class JwtProvider {
 
 	public static final String TOKEN_HEADER = "Authorization";
@@ -42,7 +49,11 @@ public class JwtProvider {
 	private  final String base64SecretBytes = Base64.getEncoder().encodeToString(secretBytes);
 	
 	
-	
+	/**
+	 * Genera el token a partir de la autenticación
+	 * @param authentication
+	 * @return
+	 */
 	public String generateToken(Authentication authentication) {
 		Usuario usuario = (Usuario) authentication.getPrincipal();
 		Date tokenExpirationDate = new Date(System.currentTimeMillis() + (jwtDurationTokenSecs * 1000));
@@ -54,12 +65,22 @@ public class JwtProvider {
 				.claim("roles", usuario.getRol().toString()).compact();
 	}
 
+	/**
+	 * Obtiene el id del usuario a partir del payload del token
+	 * @param token
+	 * @return
+	 */
 	public int getUserIdFromJWT(String token) {
 		Claims claims = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes())).parseClaimsJws(token)
 				.getBody();
 		return Integer.parseInt(claims.getSubject());
 	}
 
+	/**
+	 * Valida la integridad del token
+	 * @param authToken
+	 * @return
+	 */
 public boolean validateToken(String authToken) {
 		
 		try {

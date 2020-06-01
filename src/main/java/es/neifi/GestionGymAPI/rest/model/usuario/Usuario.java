@@ -87,7 +87,7 @@ public class Usuario implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-
+	
 		return rol.stream().map(ur -> new SimpleGrantedAuthority("ROLE" + ur.name())).collect(Collectors.toSet());
 	}
 	

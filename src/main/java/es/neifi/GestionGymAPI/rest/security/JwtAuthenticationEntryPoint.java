@@ -19,6 +19,13 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+
+/**
+ * En caso de que la autenticación sea invalida,o el token haya expirado se lanza una respuesta,
+ * al cliente indicando que no esta autorizado para obtener el recurso.
+ * @author neifi
+ *
+ */
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint{
 	
 	private final ObjectMapper mapper;

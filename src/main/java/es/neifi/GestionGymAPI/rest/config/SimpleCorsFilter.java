@@ -18,14 +18,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class SimpleCorsFilter implements Filter{
 
+/**
+ * Restringe el acceso a la API a las direcciones asignadas
+ * @author neifi
+ *
+ */
+public class SimpleCorsFilter implements Filter{
+	
+	
 	@Override
+	/**
+	 * Filtra las peticiones según la dirección de estas
+	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		final HttpServletResponse httpResponse = (HttpServletResponse)response;
 		final HttpServletRequest httpRequest = (HttpServletRequest)request;
-		httpResponse.setHeader("Access-Control-Allow-Origin", "*");//cambiar en producccion
+		httpResponse.setHeader("Access-Control-Allow-Origin", "*");//cambiar en producccion real
 		httpResponse.setHeader("Access-Control-Allow-Methods", "POST,PUT,GET,OPTIONS,DELETE");
 		httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization,Content-Type");
 		httpResponse.setHeader("Access-Control-Max-Age", "3600");

@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import es.neifi.GestionGymAPI.rest.exceptions.ApiError;
 import es.neifi.GestionGymAPI.rest.model.DTO.CrearUsuarioDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.PutClienteDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.converter.UsuarioDTOConverter;
@@ -34,6 +35,10 @@ import es.neifi.GestionGymAPI.rest.model.usuario.Usuario;
 import es.neifi.GestionGymAPI.rest.model.usuario.UsuarioRepository;
 import es.neifi.GestionGymAPI.rest.services.StorageService;
 import es.neifi.GestionGymAPI.rest.services.UsuarioService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -45,26 +50,32 @@ public class UsuarioController {
 
 	private final UsuarioService usuarioService;
 	private final UsuarioDTOConverter usuarioDTOConverter;
-	// private final SetAvatarUsuarioDTO setAvatarUsuarioDTO;
 	private final ServletContext servletContext;
 	private final StorageService storageService;
 
+	@ApiOperation(value = "Obtiene la información del usuario logeado")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
+
 	@GetMapping("/me")
 	public Optional<Usuario> me(@AuthenticationPrincipal Usuario usuarioActual) {
-
-		// return usuarioDTOConverter.convertUserToGetUserDTO(usuarioActual);
 		return usuarioService.findById(usuarioActual.getId_usuario());
 	}
-	
-	
 
+	@ApiOperation(value = "Obtiene la información del todos los usuarios")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@GetMapping("/usuario")
 	public List getAllUsers() {
-
-		// return usuarioDTOConverter.convertUserToGetUserDTO(usuarioActual);
 		return (List) usuarioService.findAll().stream().collect(Collectors.toList());
 	}
 
+	@ApiOperation(value = "Permite subir una imagen al servidor", notes = "Sube el avatar del usuario logeado")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PutMapping(value = "usuario/avatar", consumes = MediaType.ALL_VALUE)
 	public ResponseEntity<?> nuevoAvatar(@AuthenticationPrincipal Usuario usuarioActual,
 			@RequestPart("file") MultipartFile file) {
@@ -86,17 +97,25 @@ public class UsuarioController {
 		}
 
 	}
-
+	
+	@ApiOperation(value = "Crea un usuario")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PostMapping("usuario")
-	public ResponseEntity<GetUserDTO> nuevoUsuario(@RequestBody CrearUsuarioDTO nuevoUsuario) {
+	public ResponseEntity<GetUserDTO> nuevoUsuario(@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON")  @RequestBody CrearUsuarioDTO nuevoUsuario) {
 		ResponseEntity<GetUserDTO> toReturn = ResponseEntity.status(HttpStatus.CREATED)
 				.body(usuarioDTOConverter.convertUserToGetUserDTO(usuarioService.nuevoUsuario(nuevoUsuario)));
 
 		return toReturn;
 	}
-
+	
+	@ApiOperation(value = "Modifica un usuario")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PutMapping("/usuario")
-	public ResponseEntity<?> updatePerfil(@RequestBody PutUsuarioDTO data, @RequestParam int id) {
+	public ResponseEntity<?> updatePerfil(@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON") @RequestBody PutUsuarioDTO data, @ApiParam(value = "Id del cliente", required = true, type = "int") @RequestParam int id) {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.putUsuario(data, id));
 	}
 

@@ -104,12 +104,12 @@ public class ClienteController {
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@GetMapping("/cliente/{id}")
-	public Cliente obtenerUno(
+	public ResponseEntity<?> obtenerUno(
 			@ApiParam(value = "ID del cliente", required = true, type = "Integer") @PathVariable int id) {
 		try {
 
-			return clienteRepository.findById(id).orElseThrow(() -> new ClienteNotFoundException(id));
-		} catch (ClienteNotFoundException ex) {
+			return ResponseEntity.ok (clienteRepository.findById(id));
+		} catch (Exception ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
 		}
 	}
@@ -119,13 +119,13 @@ public class ClienteController {
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@GetMapping("/cliente/me")
-	public Cliente obtenerMe(
+	public ResponseEntity<?> obtenerMe(
 			@ApiParam(value = "ID del cliente", required = true, type = "Integer") @AuthenticationPrincipal Usuario cliente) {
 		try {
 
-			return clienteRepository.findById(cliente.getId_usuario())
-					.orElseThrow(() -> new ClienteNotFoundException(cliente.getId_usuario()));
-		} catch (ClienteNotFoundException ex) {
+			return ResponseEntity.ok(clienteRepository.findById(cliente.getId_usuario()));
+					
+		} catch (Exception ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
 		}
 	}
@@ -150,7 +150,6 @@ public class ClienteController {
 		nuevo.setFecha_inscripcion(
 				simpleDateFormat.format(new Date()));
 		
-//		Cliente saved = createClienteDTOConverter.convertToClient(nuevo);
 		clienteRepository.save(nuevo);
 		
 		// Alta usuario automatica
@@ -171,14 +170,13 @@ public class ClienteController {
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PutMapping("/cliente")
-	public Cliente modificarCliente(
-			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody Cliente cliente,
+	public ResponseEntity<?> modificarCliente(
+			@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON") @RequestBody Cliente cliente,
 			@AuthenticationPrincipal Usuario usuario) {
-
+		
 		cliente.setId(usuario.getId_usuario());
-		System.out.println(cliente.getCalle());
-		return clienteRepository.save(cliente);
-
+		return ResponseEntity.ok( clienteRepository.save(cliente));
+		
 	}
 
 	@ApiOperation(value = "Edita un cliente", notes = "Permite editar un cliente por la id")
@@ -207,7 +205,7 @@ public class ClienteController {
 		registroHorarioRepository.deleteByIdUsuario(id);
 		clienteRepository.delete(borrar);
 		usuarioService.deleteById(id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().build();
 	}
 
 

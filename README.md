@@ -1,3 +1,4 @@
+
 # GestionGym API
 
 API para la gestion de clientes y usuarios de un gimnasio
@@ -24,7 +25,9 @@ API para la gestion de clientes y usuarios de un gimnasio
 ```
 
 ## Postman
-Para probar las peticiones con postman sera necesaria la autenticación del cliente.
+Para probar las peticiones con postman sera necesaria la autenticación del cliente 
+haciendo un post a localhost:8081/auth/login el cuerpo de la peticion debera ser el usuario
+y password en formato json.
 ### Usuario admin
 >Usuario: admin
 >Password: admin
@@ -45,3 +48,6 @@ por ejemplo:
 http://localhost:8081/swagger-ui.html
 
 Las credenciales de acceso son las mencionadas anteriormente.
+
+# Controlfit-Back
+API Java

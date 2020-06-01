@@ -26,9 +26,6 @@ import es.neifi.GestionGymAPI.rest.exceptions.StorageFileNotFoundException;
  * los ficheros subidos dentro del servidor donde se ha desplegado
  * la apliacación.
  * 
- * ESTO SE REALIZA ASÍ PARA NO HACER MÁS COMPLEJO EL EJEMPLO.
- * EN UNA APLICACIÓN EN PRODUCCIÓN POSIBLEMENTE SE UTILICE
- * UN ALMACÉN REMOTO.
  * 
  * 
  * @author Equipo de desarrollo de Spring
@@ -48,7 +45,7 @@ public class FileSystemStorageService implements StorageService{
     
     /**
      * Método que almacena un fichero en el almacenamiento secundario
-     * desde un objeto de tipo {@link org.springframework.web.multipart#MultipartFile} MultipartFile
+     * desde un objeto de tipo MultipartFile
      * 
      * Modificamos el original del ejemplo de Spring para cambiar el nombre
      * del fichero a almacenar. Como lo asociamos al Empleado que se ha

@@ -18,6 +18,11 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+/**
+ * Utilizando Model Mapper convierte los datos del DTO en la clase(Entidad) asignada
+ * @author neifi
+ *
+ */
 public class UsuarioDTOConverter {
 
 	private final ModelMapper modelMapper;

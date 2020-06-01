@@ -25,7 +25,7 @@ import lombok.extern.java.Log;
 @RequiredArgsConstructor
 
 /**
- * Genera un token a partir de una autentificación, verifica si el token es válido
+ * Verifica si el token es válido
  * y obtiene el id del usuario a partir del contenido del token.
  * @author neifi
  *

@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+
+/**
+ * Modelo de petición de login
+ * @author neifi
+ *
+ */
 public class LoginRequest {
 	@NotBlank
 	private String username;

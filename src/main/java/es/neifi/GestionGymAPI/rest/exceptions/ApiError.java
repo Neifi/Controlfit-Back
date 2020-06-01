@@ -18,7 +18,11 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @NoArgsConstructor
 
-
+/**
+ * Modelo de error para los errores de la API
+ * @author neifi
+ *
+ */
 public class ApiError {
 	
 	@NonNull

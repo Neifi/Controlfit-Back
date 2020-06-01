@@ -1,5 +1,6 @@
 package es.neifi.GestionGymAPI.rest.model.cliente;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
