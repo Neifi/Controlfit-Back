@@ -194,6 +194,7 @@ public class ClienteController {
 		cliente.setId(id);
 		return clienteRepository.save(cliente);
 
+		
 	}
 
 	@ApiOperation(value = "Borrar cliente", notes = "Permite borrar un cliente por la id")
