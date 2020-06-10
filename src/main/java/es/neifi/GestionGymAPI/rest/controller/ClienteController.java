@@ -191,6 +191,7 @@ public class ClienteController {
 			@PathVariable int id) {
 		Cliente fecha_ins = clienteRepository.findById(id).orElse(null);
 		cliente.setFecha_inscripcion(fecha_ins.getFecha_inscripcion());
+		System.out.println(fecha_ins.getFecha_inscripcion());
 		cliente.setId(id);
 		return clienteRepository.save(cliente);
 
