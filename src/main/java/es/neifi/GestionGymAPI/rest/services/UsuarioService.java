@@ -77,6 +77,10 @@ public class UsuarioService extends BaseService<Usuario, Integer,UsuarioReposito
 	public Usuario putRol(@RequestParam String rol, @PathVariable int id) {
 		return null;
 	}
-
+	
+	public Optional<Usuario> buscarPorId(int id) {
+		
+		return findById(id);
+	}
 
 }

@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import es.neifi.GestionGymAPI.rest.exceptions.ApiError;
+import es.neifi.GestionGymAPI.rest.exceptions.UsuarioNotFoundException;
 import es.neifi.GestionGymAPI.rest.model.DTO.CrearUsuarioDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.PutClienteDTO;
 import es.neifi.GestionGymAPI.rest.model.DTO.converter.UsuarioDTOConverter;
@@ -97,25 +98,29 @@ public class UsuarioController {
 		}
 
 	}
-	
+
 	@ApiOperation(value = "Crea un usuario")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PostMapping("usuario")
-	public ResponseEntity<GetUserDTO> nuevoUsuario(@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON")  @RequestBody CrearUsuarioDTO nuevoUsuario) {
+	public ResponseEntity<GetUserDTO> nuevoUsuario(
+			@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON") @RequestBody CrearUsuarioDTO nuevoUsuario) {
 		ResponseEntity<GetUserDTO> toReturn = ResponseEntity.status(HttpStatus.CREATED)
 				.body(usuarioDTOConverter.convertUserToGetUserDTO(usuarioService.nuevoUsuario(nuevoUsuario)));
 
 		return toReturn;
 	}
-	
+
 	@ApiOperation(value = "Modifica un usuario")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Usuario.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@PutMapping("/usuario")
-	public ResponseEntity<?> updatePerfil(@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON") @RequestBody PutUsuarioDTO data, @ApiParam(value = "Id del cliente", required = true, type = "int") @RequestParam int id) {
+	public ResponseEntity<?> updatePerfil(
+			@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON") @RequestBody PutUsuarioDTO data,
+			@ApiParam(value = "Id del cliente", required = true, type = "int") @RequestParam int id) {
+			
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.putUsuario(data, id));
 	}
 

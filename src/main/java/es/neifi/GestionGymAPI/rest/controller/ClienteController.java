@@ -3,6 +3,7 @@ package es.neifi.GestionGymAPI.rest.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -63,10 +64,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping({ "/api" })
+
 @RequiredArgsConstructor
 public class ClienteController {
 
 	private final ClienteRepository clienteRepository;
+
 	private final ClientDetailsDTOConverter clienteDetailsDTOConverter;
 	private final CreateClienteDTOConverter createClienteDTOConverter;
 	private final EditarClienteDTOConverter editarClienteDTOConverter;
@@ -104,11 +107,10 @@ public class ClienteController {
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
 	@GetMapping("/cliente/{id}")
-	public ResponseEntity<?> obtenerUno(
-			@ApiParam(value = "ID del cliente", required = true, type = "Integer") @PathVariable int id) {
+	public ResponseEntity<?> obtenerUno(@PathVariable int id) {
 		try {
-
-			return ResponseEntity.ok (clienteRepository.findById(id));
+			
+			return ResponseEntity.ok(clienteRepository.findById(id));
 		} catch (Exception ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
 		}
@@ -124,7 +126,7 @@ public class ClienteController {
 		try {
 
 			return ResponseEntity.ok(clienteRepository.findById(cliente.getId_usuario()));
-					
+
 		} catch (Exception ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
 		}
@@ -141,30 +143,28 @@ public class ClienteController {
 	public ResponseEntity<Cliente> crearCliente(
 			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody Cliente nuevo,
 			@AuthenticationPrincipal Usuario admin) {
-		
-		//Busca id del gimnasio a partir del usuario que da el alta
+
+		// Busca id del gimnasio a partir del usuario que da el alta
 		int id_gimnasio = clienteRepository.findIdGimnasioByIdUsuario(admin.getId_usuario());
 		nuevo.setId_gimnasio(id_gimnasio);
-		
+
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		nuevo.setFecha_inscripcion(
-				simpleDateFormat.format(new Date()));
-		
+		nuevo.setFecha_inscripcion(simpleDateFormat.format(new Date()));
+
 		clienteRepository.save(nuevo);
-		
+
 		// Alta usuario automatica
 		if (clienteRepository.findById(nuevo.getId()).isPresent()) {
-			usuarioController.nuevoUsuario(CrearUsuarioDTO.builder().username(nuevo.getNombre()).password(nuevo.getNombre())
-					.build());
+			usuarioController.nuevoUsuario(
+					CrearUsuarioDTO.builder().username(nuevo.getNombre()).password(nuevo.getNombre()).build());
 			return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
-		}else {
+		} else {
 			throw new FalloEnAltaClienteException(new ClienteNotFoundException());
-			
+
 		}
-		
+
 	}
-	
-	
+
 	@ApiOperation(value = "Edita un cliente", notes = "Permite editar un cliente por la autenticacion")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Cliente.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
@@ -173,10 +173,11 @@ public class ClienteController {
 	public ResponseEntity<?> modificarCliente(
 			@ApiParam(value = "Datos del cliente en json", required = true, type = "JSON") @RequestBody Cliente cliente,
 			@AuthenticationPrincipal Usuario usuario) {
-		
 		cliente.setId(usuario.getId_usuario());
-		return ResponseEntity.ok( clienteRepository.save(cliente));
-		
+		Cliente fecha_ins = clienteRepository.findById(usuario.getId_usuario()).orElse(null);
+		cliente.setFecha_inscripcion(fecha_ins.getFecha_inscripcion());
+		return ResponseEntity.ok(clienteRepository.save(cliente));
+
 	}
 
 	@ApiOperation(value = "Edita un cliente", notes = "Permite editar un cliente por la id")
@@ -188,7 +189,8 @@ public class ClienteController {
 	public Cliente modificarClienteporId(
 			@ApiParam(value = "Datos del cliente", required = true, type = "JSON") @RequestBody Cliente cliente,
 			@PathVariable int id) {
-
+		Cliente fecha_ins = clienteRepository.findById(id).orElse(null);
+		cliente.setFecha_inscripcion(fecha_ins.getFecha_inscripcion());
 		cliente.setId(id);
 		return clienteRepository.save(cliente);
 
@@ -207,7 +209,5 @@ public class ClienteController {
 		usuarioService.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
-
-
 
 }

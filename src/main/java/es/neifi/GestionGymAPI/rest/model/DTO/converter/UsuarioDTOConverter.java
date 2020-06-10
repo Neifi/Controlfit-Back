@@ -27,7 +27,7 @@ public class UsuarioDTOConverter {
 
 	private final ModelMapper modelMapper;
 	private final PasswordEncoder encoder;
-
+	
 	public GetUserDTO convertUserToGetUserDTO(Usuario usuario) {
 		System.out.println(usuario.getPassword());
 		return GetUserDTO.builder()

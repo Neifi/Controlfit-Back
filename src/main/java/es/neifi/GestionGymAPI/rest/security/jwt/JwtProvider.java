@@ -40,7 +40,7 @@ public class JwtProvider {
 	public static final String TOKEN_TYPE = "JWT";
 
 
-	private final String jwtSecret  = "EnUnLugarDeLaManchaDeCuyoNombreNoQuieroAcordarmeNoHaMuchoTiempoQueViviaUnHidalgo";
+	private final String jwtSecret  = "A4F41C4CBFC51BC3CC0FBF6654CB9366EF7F87894F15C7C2F85D5F01F64E4B65";
 	@Value("${jwt.token-expiration: 3600}")
 	private int jwtDurationTokenSecs;
 		
@@ -101,3 +101,5 @@ public boolean validateToken(String authToken) {
 		
 	}
 }
+
+

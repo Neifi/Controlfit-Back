@@ -28,21 +28,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 @Entity
-
-@Builder
 @Component
 public class Cliente {
 
 	@Id
-
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private int id;
+	
 	private int id_gimnasio;
+	
 	private String dni;
 	private String nombre;
 	private String apellidos;
@@ -54,13 +54,12 @@ public class Cliente {
 	private String ciudad;
 	private String provincia;
 
-//	@ManyToOne(targetEntity = Gimnasio.class)
-//	@JoinColumn(name="id_gimnasio")
-//	private Gimnasio id_gimnasio;//TODo Trigger
-
 	@JsonIgnore
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "id_usuario")
 	private Usuario usuario;
 
 }
+
+

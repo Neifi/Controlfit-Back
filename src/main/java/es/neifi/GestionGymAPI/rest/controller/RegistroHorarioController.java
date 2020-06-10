@@ -144,7 +144,7 @@ public class RegistroHorarioController {
 		} else if (tipoRegistro.contentEquals("s")) {
 			String horaSalida = DateTime.now().toString("HH:mm:ss");
 			String fecha = DateTime.now().toString("dd-MM-yyyy");
-
+			
 			System.out.println(horaSalida);
 			registroHorarioRepo.insertExit(horaSalida, fecha, id_usuario);
 			return ResponseEntity.status(HttpStatus.CREATED).build();

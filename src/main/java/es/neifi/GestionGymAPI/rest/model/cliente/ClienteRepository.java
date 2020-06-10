@@ -15,9 +15,7 @@ import es.neifi.GestionGymAPI.rest.model.usuario.Usuario;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 
-	@Modifying
-	@Query("UPDATE Cliente c SET c.email = :email WHERE c.id = :id")
-	int updateDatosContacto(@Param("email") String email, @Param("id") int id);
+	
 	
 	@Modifying
 	@Query( value = "UPDATE Cliente c SET c.nombre = ?, c.apellidos = ?, c.fecha_nacimiento = ?, c.dni = ?, c.calle = ?, c.ciudad= ?, c.provincia = ?, c.codigo_postal = ? WHERE c.id = ?", nativeQuery = true)
@@ -26,7 +24,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	List<Cliente> findAllByOrderByIdAsc();
 
 	
-	@Query(value = "SELECT id_gimnasio  AS id FROM Cliente INNER JOIN usuario ON cliente.id = usuario.id_usuario WHERE id_usuario =:id_usuario",nativeQuery = true)
+	@Query(value = "SELECT id_gimnasio  AS id FROM Cliente INNER JOIN "
+			+ "usuario ON cliente.id = usuario.id_usuario WHERE id_usuario =:id_usuario",nativeQuery = true)
 	int findIdGimnasioByIdUsuario(@Param("id_usuario")int id_usuario);
 	
 	
