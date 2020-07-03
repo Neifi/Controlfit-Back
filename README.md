@@ -39,15 +39,6 @@ y password en formato json.
 #### Usuario no verificado
 > Usuario: unverified
 >Password: unverified
-## Swagger
-
-Para probar las peticiones sin postman, en el navegador se pondra:
-http://[host]:[puerto]/swagger-ui.html
-
-por ejemplo:
-http://localhost:8081/swagger-ui.html
-
-Las credenciales de acceso son las mencionadas anteriormente.
 
 # Controlfit-Back
 API Java
