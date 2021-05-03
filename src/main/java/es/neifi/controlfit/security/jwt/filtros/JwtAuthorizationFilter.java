@@ -16,8 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import es.neifi.controlfit.cliente.model.Cliente;
-import es.neifi.controlfit.cliente.service.ClienteService;
-import es.neifi.controlfit.cliente.service.CustomUserDetailsService;
+import es.neifi.controlfit.cliente.service.ClientService;
 import es.neifi.controlfit.security.jwt.providers.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -35,7 +34,7 @@ import lombok.extern.java.Log;
 public class JwtAuthorizationFilter extends OncePerRequestFilter{
 	
 	private final JwtProvider provider;
-	private final ClienteService clienteService;
+	private final ClientService clientService;
 	
 	
 	@Override
@@ -48,7 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter{
 			String token = getJwtFromRequest(request);
 			if(StringUtils.hasText(token) && provider.validateToken(token)) {
 				int userId = provider.getUserIdFromJWT(token);
-				Cliente user =  clienteService.buscarPorId(userId).get();
+				Cliente user =  clientService.findClientById(userId).get();
 
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, user.getRol(),user.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetails(request));

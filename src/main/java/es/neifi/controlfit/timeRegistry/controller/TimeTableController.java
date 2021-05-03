@@ -1,4 +1,4 @@
-package es.neifi.controlfit.registrohorario.controller;
+package es.neifi.controlfit.timeRegistry.controller;
 
 
 import java.text.SimpleDateFormat;
@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import es.neifi.controlfit.cliente.exception.ClienteNotFoundException;
-import es.neifi.controlfit.registrohorario.model.RegistroHorario;
-import es.neifi.controlfit.registrohorario.repo.TimeRegistrationRepository;
-import es.neifi.controlfit.registrohorario.service.TimeRegistrySerice;
+import es.neifi.controlfit.timeRegistry.model.TimeRegistry;
+import es.neifi.controlfit.timeRegistry.repo.TimeRegistryRepository;
+import es.neifi.controlfit.timeRegistry.service.TimeRegistryService;
 
 
 import lombok.RequiredArgsConstructor;
@@ -27,12 +27,12 @@ import lombok.RequiredArgsConstructor;
 
 public class TimeTableController {
 
-	private final TimeRegistrationRepository timeRegistrationRepository;
+	private final TimeRegistryRepository timeRegistryRepository;
 	private String dtEntrada = "";
 
 	@GetMapping("/timetable")
 	public ResponseEntity<?> getAll() {
-		List<RegistroHorario> registros = timeRegistrationRepository.findAll();
+		List<TimeRegistry> registros = timeRegistryRepository.findAll();
 
 		if (registros.isEmpty()) {
 			return ResponseEntity.notFound().build();
@@ -44,13 +44,13 @@ public class TimeTableController {
 	@GetMapping("/timetable/{id}")
 	public ResponseEntity<?> getByClientId(@PathVariable int id) {
 		return ResponseEntity
-				.ok(timeRegistrationRepository.selectByUserId(id).orElseThrow(() -> new ClienteNotFoundException(id)));
+				.ok(timeRegistryRepository.selectByUserId(id).orElseThrow(() -> new ClienteNotFoundException(id)));
 
 	}
 
 	public ResponseEntity<?> getByDateInterval(@RequestParam String fechaInicio, @RequestParam String fechaFin,
 			@PathVariable int id_usuario) {
-		List<RegistroHorario> registros = timeRegistrationRepository.selectIntervaloFecha(fechaInicio, fechaFin, id_usuario);
+		List<TimeRegistry> registros = timeRegistryRepository.selectIntervaloFecha(fechaInicio, fechaFin, id_usuario);
 		if (registros.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		} else {
@@ -81,23 +81,23 @@ public class TimeTableController {
 		String fecha = DateTime.now().toString("dd-MM-yyyy");
 
 		System.out.println(horaSalida);
-		timeRegistrationRepository.insertExit(horaSalida, fecha, id_usuario);
+		timeRegistryRepository.insertExit(horaSalida, fecha, id_usuario);
 	}
 
 	private void setEntryHour(int id_usuario) {
 		dtEntrada = DateTime.now().toString("HH:mm:ss");
 		String fecha = DateTime.now().toString("dd-MM-yyyy");
-		timeRegistrationRepository.insertEntry(dtEntrada, fecha, id_usuario);
+		timeRegistryRepository.insertEntry(dtEntrada, fecha, id_usuario);
 	}
 
 	@GetMapping("/hours")
-	public ResponseEntity<String> calculateHours(@RequestBody RegistroHorario registroHorarioCompleto) {
+	public ResponseEntity<String> calculateHours(@RequestBody TimeRegistry timeRegistryCompleto) {
 
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-		String entry = registroHorarioCompleto.getHoraentrada();
-		String exit = registroHorarioCompleto.getHorasalida();
+		String entry = timeRegistryCompleto.getHoraentrada();
+		String exit = timeRegistryCompleto.getHorasalida();
 
-		return ResponseEntity.accepted().body(TimeRegistrySerice.calculateGymTimeSpent(format, entry, exit));
+		return ResponseEntity.accepted().body(TimeRegistryService.calculateGymTimeSpent(format, entry, exit));
 	}
 
 }

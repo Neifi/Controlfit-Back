@@ -1,6 +1,5 @@
-package es.neifi.controlfit.registrohorario.repo;
+package es.neifi.controlfit.timeRegistry.repo;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,10 +8,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.neifi.controlfit.registrohorario.model.RegistroHorario;
+import es.neifi.controlfit.timeRegistry.model.TimeRegistry;
 
 
-public interface TimeRegistrationRepository extends JpaRepository<RegistroHorario, Integer>{
+public interface TimeRegistryRepository extends JpaRepository<TimeRegistry, Integer>{
 	
 	@Transactional
 	@Modifying
@@ -27,14 +26,14 @@ public interface TimeRegistrationRepository extends JpaRepository<RegistroHorari
 	
 
 	@Query(value = "SELECT * FROM registrohorario WHERE fecha >= ?, AND fecha > ? AND id_usuario = ? ", nativeQuery = true)
-	public List<RegistroHorario> selectIntervaloFecha(String fechaInicio, String fechaFin, int id_usuario);
+	public List<TimeRegistry> selectIntervaloFecha(String fechaInicio, String fechaFin, int id_usuario);
 	
 	@Query(value = "SELECT * FROM registroHorario WHERE id_usuario = ?", nativeQuery = true)
-	public  Optional<List<RegistroHorario>> selectByUserId(int id);
+	public  Optional<List<TimeRegistry>> selectByUserId(int id);
 	
 	@Transactional
 	@Modifying
 	@Query(value="DELETE FROM registrohorario WHERE id_usuario = ?", nativeQuery = true)
-	public int deleteByIdUsuario(int id_usuario);
+	public int deleteById(int id_usuario);
 	
 }

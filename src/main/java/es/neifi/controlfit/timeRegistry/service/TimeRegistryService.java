@@ -1,15 +1,18 @@
-package es.neifi.controlfit.registrohorario.service;
+package es.neifi.controlfit.timeRegistry.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import es.neifi.controlfit.services.BaseService;
+import es.neifi.controlfit.timeRegistry.model.TimeRegistry;
+import es.neifi.controlfit.timeRegistry.repo.TimeRegistryRepository;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Minutes;
 import org.joda.time.Seconds;
 
-public class TimeRegistrySerice {
+public class TimeRegistryService extends BaseService<TimeRegistry,Integer, TimeRegistryRepository> {
 	
 	/**
 	 *  Calcula las horas de diferencia en funcion de la hora de entrada y salida de un registro horario
@@ -38,5 +41,10 @@ public class TimeRegistrySerice {
 			e.printStackTrace();
 		}
 		return difference;
+	}
+
+	@Override
+	public void deleteById(Integer integer) {
+		super.deleteById(integer);
 	}
 }

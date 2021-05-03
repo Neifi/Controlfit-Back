@@ -1,19 +1,17 @@
 package es.neifi.controlfit.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import es.neifi.controlfit.cliente.service.ClienteService;
+import es.neifi.controlfit.cliente.service.ClientService;
 
-class ClienteServiceTest {
+class ClientServiceTest {
 	
 	@Autowired
-	private ClienteService clienteService;
+	private ClientService clientService;
 	@Test
 	void findAllClientsThatMatchWithSomeCriteriaThenReturnClientsInList() {
 		

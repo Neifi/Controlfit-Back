@@ -15,7 +15,6 @@ public abstract class BaseService<T, ID, R extends JpaRepository<T, ID>> {
 		return repositorio.save(t);
 		
 	}
-	
 	public Optional<T> findById(ID id) {
 		return repositorio.findById(id);
 	}

@@ -2,8 +2,6 @@ package es.neifi.controlfit.cliente.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import static java.util.stream.Collectors.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,25 +12,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.neifi.controlfit.cliente.dto.ClientDto;
-import es.neifi.controlfit.cliente.dto.ClienteDtoConverter;
+import es.neifi.controlfit.cliente.dto.ClientDtoConverter;
 import es.neifi.controlfit.cliente.model.Cliente;
 import es.neifi.controlfit.cliente.repo.ClienteRepository;
 import es.neifi.controlfit.services.BaseService;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Service
 @NoArgsConstructor
-public class ClienteService extends BaseService<Cliente, Integer, ClienteRepository> {
+public class ClientService extends BaseService<Cliente, Integer, ClienteRepository> {
 	
 	@Autowired
 	private  ClienteRepository clienteRepository;
 	@Autowired
-	private  ClienteDtoConverter clienteDtoConverter;
+	private ClientDtoConverter clientDtoConverter;
 	
 
 	
-	public Optional<Cliente> searchByUserName(String username) {
+	public Optional<Cliente> searchClientByUsername(String username) {
 		return this.clienteRepository.findByUsername(username);
 	}
 	
@@ -54,42 +51,43 @@ public class ClienteService extends BaseService<Cliente, Integer, ClienteReposit
 //		return findedClients;
 //	}
 	
-	public Cliente nuevoCliente(ClientDto cliente) {
-		Cliente nuevoCliente = clienteDtoConverter.convertToEntity(cliente);
+	public Cliente registerClient(ClientDto cliente) {
+		Cliente clientToBeRegistered = clientDtoConverter.convertToEntity(cliente);
 		try {
 
+			return save(clientToBeRegistered);
+		} catch (DataIntegrityViolationException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nombre de usuario existente");
+		}
+	}
+
+	public Cliente updateClientById(ClientDto cliente, int id) {
+		Cliente nuevoCliente = clientDtoConverter.convertToEntity(cliente);
+		try {
+			findClientById(id);
 			return save(nuevoCliente);
 		} catch (DataIntegrityViolationException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nombre de usuario existente");
 		}
 	}
 
-	public Cliente editarCliente(ClientDto cliente, int id) {
-		Cliente nuevoCliente = clienteDtoConverter.convertToEntity(cliente);
+	public void deleteClientById(int id) {
 		try {
-			buscarPorId(id);
-			return save(nuevoCliente);
-		} catch (DataIntegrityViolationException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nombre de usuario existente");
-		}
-	}
-
-	public void borrarPorId(int id) {
-		try {
-			buscarPorId(id);
-			deleteById(id);
+			findClientById(id);
+			deleteClientById(id);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 
-	public Optional<Cliente> buscarPorId(int id) {
+	public Optional<Cliente> findClientById(int id) {
 
 		return findById(id);
 	}
 
-	public List<Cliente> listarClientes() {
-		return findAll();
+	public List<Cliente> findAllClientsOrderedById() {
+		return clienteRepository.findAllByOrderByIdAsc();
 	}
+
 
 }

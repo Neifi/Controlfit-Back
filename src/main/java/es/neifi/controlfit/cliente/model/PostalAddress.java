@@ -1,1 +1,19 @@
-package es.neifi.controlfit.cliente.model;public class PostalAddress implements java.io.Serializable{private java.lang.String calle;private java.lang.String codigo_postal;private java.lang.String ciudad;private java.lang.String provincia;	public PostalAddress()	{	}}
+package es.neifi.controlfit.cliente.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@Data
+@AllArgsConstructor
+public class PostalAddress implements Serializable {
+    private String calle;
+    private String codigo_postal;
+    private String ciudad;
+    private String provincia;
+
+    public PostalAddress() {
+    }
+}

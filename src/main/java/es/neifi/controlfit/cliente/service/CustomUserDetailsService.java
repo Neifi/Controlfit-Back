@@ -12,18 +12,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService{
 	
-	private final ClienteService clienteService;
+	private final ClientService clientService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		
-		return clienteService.searchByUserName(username)
+		return clientService.searchClientByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("Cliente no encontrado"));
 	}
 
 	public Cliente loadUserById(int userId) {
 		// TODO Auto-generated method stub
-		return clienteService.buscarPorId(userId)
+		return clientService.findClientById(userId)
 				.orElseThrow(() -> new UsernameNotFoundException("Cliente no encontrado"));
 	}
 

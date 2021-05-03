@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.neifi.controlfit.cliente.dto.ClienteDtoConverter;
+import es.neifi.controlfit.cliente.dto.ClientDtoConverter;
 import es.neifi.controlfit.cliente.model.Cliente;
 import es.neifi.controlfit.security.jwt.model.LoginRequest;
 import es.neifi.controlfit.security.jwt.providers.JwtProvider;
@@ -25,7 +25,7 @@ public class AuthenticationController {
 	
 	private final AuthenticationManager authenticationManager;
 	private final JwtProvider provider;
-	private final ClienteDtoConverter converter;
+	private final ClientDtoConverter converter;
 	
 	@PostMapping("auth/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){

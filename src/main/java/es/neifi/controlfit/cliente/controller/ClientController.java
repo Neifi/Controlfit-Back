@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping({ "/api" })
 
 @RequiredArgsConstructor
-public class ClienteController {
+public class ClientController {
 
 	private final ClienteRepository clienteRepository;
 
@@ -46,9 +46,9 @@ public class ClienteController {
 			clientDto.setAvatar(url);
 			
 			try {
-				Optional<Cliente> clientEntity = searchClientByUsername(clientDto);
+				Optional<Cliente> clientEntity = findClientByUsername(clientDto);
 
-				return ResponseEntity.ok(clientService.editarCliente(clientDto, clientEntity.get().getId()));
+				return ResponseEntity.ok(clientService.updateClientById(clientDto, clientEntity.get().getId()));
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
 			}
@@ -58,8 +58,8 @@ public class ClienteController {
 
 	}
 
-	public Optional<Cliente> searchClientByUsername(ClientDto currentClient) {
-		Optional<Cliente> id = clientService.searchByUserName(currentClient.getUsername());
+	public Optional<Cliente> findClientByUsername(ClientDto currentClient) {
+		Optional<Cliente> id = clientService.searchClientByUsername(currentClient.getUsername());
 		return id;
 	}
 
@@ -73,7 +73,7 @@ public class ClienteController {
 
 	@GetMapping("/cliente")
 	public ResponseEntity<?> getAllClients() {
-		List<Cliente> clientes = clienteRepository.findAllByOrderByIdAsc();
+		List<Cliente> clientes = clientService.findAllClientsOrderedById();
 		if (clientes.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No users found");
 		} else {

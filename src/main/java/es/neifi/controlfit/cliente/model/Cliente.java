@@ -2,36 +2,25 @@ package es.neifi.controlfit.cliente.model;
 
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import es.neifi.controlfit.rol.model.Rol;
 import lombok.AllArgsConstructor;
@@ -64,12 +53,9 @@ public class Cliente implements UserDetails{
 	private String apellidos;
 	private String fecha_nacimiento;
 
+	private PostalAddress postalAddress;
+
 	private String email;
-	private String calle;
-	private String codigo_postal;
-	private String ciudad;
-	private String provincia;
-	
 	private String username;
 	private String password;
 	private String avatar;

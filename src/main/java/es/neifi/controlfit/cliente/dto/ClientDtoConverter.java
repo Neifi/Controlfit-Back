@@ -10,7 +10,7 @@ import es.neifi.controlfit.rol.model.Rol;
 import es.neifi.controlfit.security.jwt.model.JwtUserResponse;
 
 @Component
-public class ClienteDtoConverter {
+public class ClientDtoConverter {
 	private ModelMapper modelMapper;
 	
 	public Cliente convertToEntity(TableListInfoDTO dto) {
@@ -25,7 +25,6 @@ public class ClienteDtoConverter {
 	}
 	
 	public Object convertUserAndTokenToJwtUserResponse(Cliente cliente, String token) {
-		// TODO Auto-generated method stub
 		return JwtUserResponse.jwtUserResponseBuilder()
 				.rol(cliente.getRol().stream().map(Rol::name).collect(Collectors.toSet()))
 				.token(token)
