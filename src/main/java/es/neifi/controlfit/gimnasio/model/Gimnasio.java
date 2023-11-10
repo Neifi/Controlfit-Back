@@ -2,20 +2,17 @@ package es.neifi.controlfit.gimnasio.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import es.neifi.controlfit.cliente.model.Cliente;
+import es.neifi.controlfit.customer.model.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -44,8 +41,8 @@ public class Gimnasio {
 	private String pais;
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER,targetEntity = Cliente.class)
-	private List <Cliente> cliente;
+	@OneToMany(fetch = FetchType.EAGER,targetEntity = Customer.class)
+	private List <Customer> customer;
 	
 	
 	

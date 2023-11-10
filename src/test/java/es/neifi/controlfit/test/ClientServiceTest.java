@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import es.neifi.controlfit.cliente.service.ClientService;
+import es.neifi.controlfit.customer.service.ClientService;
 
 class ClientServiceTest {
 	
